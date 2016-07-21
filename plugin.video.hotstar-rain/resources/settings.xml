@@ -1,6 +1,6 @@
 <settings>
 	<category label="Options">
-	<setting id="langType" type="labelenum" label="Select Language" values="Hindi|English|Kannada|Tamil|Telugu|Malayalam|Marathi|Bengali" default="Hindi"/>
+	<setting id="langType" type="labelenum" label="Select Language" values="Hindi|English|Kannada|Tamil|Telugu|Malayalam|Marathi|Bengali|Let me Choose" default="Hindi"/>
 	<setting id="tvsortType" type="labelenum" label="TV Shows sorting by" values="Default|Name" default="Default" />
 	<setting id="moviessortType" type="labelenum" label="Movies sorting by" values="Name|Newest|Popularity" default="Newest" />
 	<setting id="qualityType" type="labelenum" label="Video Quality Selection" values="Highest|720p|404p|360p|Let me Choose" default="720p"/>

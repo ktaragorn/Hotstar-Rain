@@ -31,3 +31,6 @@
 
 [B][COLOR green]V 1.0.9 (Saturday 21 June, 2016)[/COLOR][/B]
 -- [COLOR yellow][B]fixes[/COLOR][/B] fix for tvshows.
+
+[B][COLOR green]V 1.0.10 (Thursday 21 July, 2016)[/COLOR][/B]
+-- [COLOR yellow][B]Language[/COLOR][/B] Add an option to allow selecting the language on every use of the addon, instead of just setting in the settings.
