@@ -77,9 +77,9 @@ def get_menu():
 	addDir(5, '[B][COLOR green]Movie Collections[/COLOR](old look)[/B]', '','', '')
 	addDir(4, '[B]Sports[/B](old look)', '','', '')
 
-def select_language():
+def language_selection():
 	for language in supported_languages:
-		addDir(language, language.capitalize(), '','')
+		addDir(1, language.capitalize(), '','', lang = language)
 
 def get_main_featured():
 	html = make_request(url)
@@ -411,7 +411,7 @@ def setView(content, viewType):
     xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_GENRE )
     xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_MPAA_RATING )
 
-def addDir(mode,name,url,image,duration="",isplayable=False):
+def addDir(mode,name,url,image,duration="",isplayable=False, lang = language):
 	name = name.encode('utf-8', 'ignore')
 	url = url.encode('utf-8', 'ignore')
 
@@ -422,7 +422,7 @@ def addDir(mode,name,url,image,duration="",isplayable=False):
 			# name = urllib.unquote_plus(name).split(']')[2].split('[')[0]
 		print link
 	else:
-		link = sys.argv[0]+"?mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&url="+urllib.quote_plus(url)+"&image="+urllib.quote_plus(image)
+		link = sys.argv[0]+"?mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&url="+urllib.quote_plus(url)+"&image="+urllib.quote_plus(image) +"&lang="+urllib.quote_plus(lang)
 
 	ok=True
 	item=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=image)
@@ -445,6 +445,7 @@ def addDir(mode,name,url,image,duration="",isplayable=False):
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=link,listitem=item,isFolder=isfolder)
 	return ok
 
+#could be replaced by urlparse.parse_qs, is it available?
 def get_params():
     param=[]
     paramstring=sys.argv[2]
@@ -468,10 +469,14 @@ name=None
 url=None
 image=None
 
-if select_language and params["mode"] and params["mode"] in supported_languages:
-	language = params["mode"]
-	params["mode"] = None
-	select_language = False
+try:
+	# if select_language - this is set to selected language after language selection screen
+	# and that is persisted after that for the session. Else this value is set from the settings
+	lang_param = urllib.unquote_plus(params["lang"])
+	if lang_param in supported_languages:
+	    language = lang_param # overwrite settings from url if valid
+except:
+    pass
 
 try:
     mode=int(params["mode"])
@@ -492,9 +497,12 @@ except:
 
 if mode==None:
 	if select_language:
-		select_language()
+		language_selection()
 	else:
 		new_menu()
+
+if mode==1:
+	new_menu()
 
 if mode==30:
 	get_menu()
