@@ -411,9 +411,11 @@ def setView(content, viewType):
     xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_GENRE )
     xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_MPAA_RATING )
 
-def addDir(mode,name,url,image,duration="",isplayable=False, lang = language):
+def addDir(mode,name,url,image,duration="",isplayable=False, lang = None):
 	name = name.encode('utf-8', 'ignore')
 	url = url.encode('utf-8', 'ignore')
+
+	lang = lang if lang else language
 
 	if 0==mode:
 		link = url
@@ -422,7 +424,10 @@ def addDir(mode,name,url,image,duration="",isplayable=False, lang = language):
 			# name = urllib.unquote_plus(name).split(']')[2].split('[')[0]
 		print link
 	else:
-		link = sys.argv[0]+"?mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&url="+urllib.quote_plus(url)+"&image="+urllib.quote_plus(image) +"&lang="+urllib.quote_plus(lang)
+		link = sys.argv[0]+"?mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&url="+urllib.quote_plus(url)+"&image="+urllib.quote_plus(image)
+		# changing the url resets watched status, thus we only add the lang to the let me choose mode
+		if select_language:
+			link += "&lang="+urllib.quote_plus(lang)
 
 	ok=True
 	item=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=image)
